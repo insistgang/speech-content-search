@@ -1,0 +1,114 @@
+{
+  "code": "07",
+  "project": "speech-search",
+  "source_directory": "07_语音内容检索/工程源码",
+  "original_source": "07为本次独立重建；09原版本由保留的本地Git历史记录",
+  "preserved_files": [
+    {
+      "path": ".gitignore",
+      "sha256": "e6be662cc537606fa46168997f155a8d2e7813f07d5362666a824174d9c8c13c",
+      "bytes": 64
+    },
+    {
+      "path": "AGENTS.md",
+      "sha256": "7de19078c94cfaa6b2f27d64ab8e4fba0a13292e29281fc212182781dc93ead2",
+      "bytes": 982
+    },
+    {
+      "path": "README.md",
+      "sha256": "9dff719933a49db8478d8ff8bf9109421a5b6f704bd035601c93248154886131",
+      "bytes": 2535
+    },
+    {
+      "path": "ROADMAP.md",
+      "sha256": "14dff62bd563618b7fe80272c0d07de87e7de0f54724587acb94e9ea26ffe01f",
+      "bytes": 855
+    },
+    {
+      "path": "SPEC.md",
+      "sha256": "27bcc8ea60b085e109d4229b34104822076d2120c440f32931f452c225ace767",
+      "bytes": 5724
+    },
+    {
+      "path": "app/__init__.py",
+      "sha256": "a88ba77c70fa13ace3a5b40590fee28c9a62d19bc633e41a751b305d6ec4f1e7",
+      "bytes": 44
+    },
+    {
+      "path": "app/db.py",
+      "sha256": "a0f263d1d7eef6da423208843d19924eca208eeae50cd085055419a383a7a146",
+      "bytes": 1994
+    },
+    {
+      "path": "app/main.py",
+      "sha256": "fd552a68cb32c4f91b478817e83739f310da2e2a0ee6745dfb044519133583c0",
+      "bytes": 12843
+    },
+    {
+      "path": "app/media.py",
+      "sha256": "12949333cf26ce5f38259ca52f0c86243e667cad8f65bcef4bf7c4d11d67a58f",
+      "bytes": 1529
+    },
+    {
+      "path": "app/transcripts.py",
+      "sha256": "470b917f7e39a82415258c7fcc2c9ad6dbfa6b8c76d463f666520c3031848c6c",
+      "bytes": 3912
+    },
+    {
+      "path": "library/操作演示.mp4",
+      "sha256": "d7859dba03d26561929dfd9c452409c25a6f8e662412d6a8b6b5a48fb0df1212",
+      "bytes": 8227
+    },
+    {
+      "path": "library/操作演示.transcript.json",
+      "sha256": "cbfdff8a1669ab7753bf5ca73e85911edc299893402c358bc3b9bcb4a8e58c06",
+      "bytes": 194
+    },
+    {
+      "path": "requirements.txt",
+      "sha256": "f75220c1bb02df2bc99ca64f1cb2afff127cef4f2e71144c2a3f8a4b824c2dca",
+      "bytes": 61
+    },
+    {
+      "path": "tests/frontend.test.cjs",
+      "sha256": "42406a6e64fef8418de5a4a6ba774ea5354b843b80c7eab7020d34446317bdb7",
+      "bytes": 2262
+    },
+    {
+      "path": "tests/test_api.py",
+      "sha256": "2f83b2d73ee62f7b1d6f7a281acd4bfe63d15b9ce9eb44068e972f1c520a4ef9",
+      "bytes": 5844
+    },
+    {
+      "path": "tests/test_media.py",
+      "sha256": "bbbd55e814641919ab30c6049e48fec0f0f7b86e186b9ce6c74786cde40aaed5",
+      "bytes": 3794
+    },
+    {
+      "path": "tests/test_transcripts.py",
+      "sha256": "fb22a764f5ee30af36afb5104b84574572323daf86ada4cda79cff1d229e745a",
+      "bytes": 2640
+    },
+    {
+      "path": "web/app.js",
+      "sha256": "0730e8e4b76d2f1b3f09eb5cced0990b0462042fdfaf482942ff31328f6a1006",
+      "bytes": 28279
+    },
+    {
+      "path": "web/index.html",
+      "sha256": "dbfa616fb488e48c3a1f822cc14e695621414c75a77f0f0ae0b4ad73fc3a3a20",
+      "bytes": 9461
+    },
+    {
+      "path": "web/style.css",
+      "sha256": "dfafe9df7425f43bfd33f66cad685e94cb1d30e5f5bc9d9d57a0fc2ead5668bb",
+      "bytes": 15495
+    }
+  ],
+  "omitted_file_count": 1540,
+  "omitted_groups": [
+    "node_modules或Python虚拟环境",
+    "构建输出",
+    "运行和编译缓存"
+  ]
+}

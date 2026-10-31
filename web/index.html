@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="light" />
+    <title>语音内容智能检索系统</title>
+    <link rel="stylesheet" href="/static/style.css" />
+    <script src="/static/app.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#main-content">跳到主要内容</a>
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="brand-mark" aria-hidden="true">声</div>
+        <div class="brand-copy">
+          <p class="eyebrow">LOCAL MEDIA WORKSPACE</p>
+          <h1>语音内容智能检索系统</h1>
+        </div>
+        <div id="connection-state" class="connection-state" role="status" aria-live="polite">
+          <span class="state-dot" aria-hidden="true"></span>
+          <span id="connection-label">正在连接本地服务…</span>
+        </div>
+      </div>
+    </header>
+
+    <main id="main-content" class="page-shell">
+      <div id="global-message" class="notice notice-info" role="status" aria-live="polite">
+        正在读取本机视频索引和任务状态…
+      </div>
+
+      <section class="panel import-panel" aria-labelledby="import-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">01 · IMPORT</p>
+            <h2 id="import-title">导入本地视频</h2>
+            <p class="section-description">输入本机允许目录内的视频路径。系统读取视频，不会移动或删除原文件；失败重试会使用当前转写方式。</p>
+          </div>
+        </div>
+
+        <div class="field-row provider-row">
+          <label for="provider-select">转写方式</label>
+          <select id="provider-select" name="provider">
+            <option value="sidecar">读取同名 sidecar 转写文件</option>
+            <option value="whisper">本地 Whisper</option>
+          </select>
+          <p id="whisper-help" class="field-help">Whisper 需要在本机预先配置模型路径；此页面不会下载模型或调用外部服务。</p>
+        </div>
+
+        <div class="import-forms">
+          <form id="import-file-form" class="subform">
+            <h3>单个文件</h3>
+            <label for="file-path">视频文件路径</label>
+            <div class="input-action-row">
+              <input id="file-path" name="path" type="text" autocomplete="off" spellcheck="false" placeholder="例如：课程片段.mp4" required />
+              <button class="button button-primary" type="submit">导入文件</button>
+            </div>
+          </form>
+
+          <form id="import-folder-form" class="subform">
+            <h3>整个文件夹</h3>
+            <label for="folder-path">文件夹路径</label>
+            <div class="input-action-row">
+              <input id="folder-path" name="path" type="text" autocomplete="off" spellcheck="false" placeholder="例如：访谈资料" required />
+              <button class="button button-secondary" type="submit">扫描文件夹</button>
+            </div>
+            <label class="check-row" for="recursive">
+              <input id="recursive" name="recursive" type="checkbox" />
+              <span>包含子文件夹</span>
+            </label>
+          </form>
+        </div>
+        <p id="import-message" class="inline-message" role="status" aria-live="polite"></p>
+      </section>
+
+      <section class="panel" aria-labelledby="videos-title">
+        <div class="section-heading section-heading-row">
+          <div>
+            <p class="eyebrow">02 · LIBRARY</p>
+            <h2 id="videos-title">视频列表</h2>
+            <p class="section-description">查看转写状态；失败项目可重试，删除只移除本地索引和系统生成的缓存。</p>
+          </div>
+          <button id="refresh-button" class="button button-quiet" type="button">刷新列表</button>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th scope="col">视频</th>
+                <th scope="col">时长</th>
+                <th scope="col">状态</th>
+                <th scope="col">错误信息</th>
+                <th scope="col">操作</th>
+              </tr>
+            </thead>
+            <tbody id="video-table-body"></tbody>
+          </table>
+          <p id="videos-empty" class="empty-state" hidden>还没有导入视频。输入本地路径后即可开始建立索引。</p>
+        </div>
+      </section>
+
+      <section class="panel" aria-labelledby="tasks-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">03 · ACTIVITY</p>
+            <h2 id="tasks-title">转写任务</h2>
+            <p class="section-description">任务状态会自动刷新。失败时会保留错误信息。</p>
+          </div>
+        </div>
+        <div class="table-wrap">
+          <table class="data-table task-table">
+            <thead>
+              <tr>
+                <th scope="col">任务</th>
+                <th scope="col">视频</th>
+                <th scope="col">状态</th>
+                <th scope="col">进度</th>
+                <th scope="col">更新时间</th>
+                <th scope="col">错误信息</th>
+              </tr>
+            </thead>
+            <tbody id="task-table-body"></tbody>
+          </table>
+          <p id="tasks-empty" class="empty-state" hidden>暂无转写任务。</p>
+        </div>
+      </section>
+
+      <section class="panel search-panel" aria-labelledby="search-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">04 · SEARCH</p>
+            <h2 id="search-title">检索语音内容</h2>
+            <p class="section-description">按转写文本查找片段，也可以选择词库一次检索多个词。</p>
+          </div>
+        </div>
+        <form id="search-form" class="search-form">
+          <div class="search-query-field">
+            <label for="search-query">检索词</label>
+            <input id="search-query" name="query" type="text" maxlength="200" autocomplete="off" placeholder="输入要查找的词语或短句" />
+          </div>
+          <div class="search-filter-fields">
+            <div class="field-stack">
+              <label for="search-mode">匹配方式</label>
+              <select id="search-mode" name="mode">
+                <option value="exact">精确匹配</option>
+                <option value="fuzzy">模糊匹配</option>
+              </select>
+            </div>
+            <div class="field-stack">
+              <label for="search-keyword-set">词库（可选）</label>
+              <select id="search-keyword-set" name="keyword_set_id">
+                <option value="">不限定词库</option>
+              </select>
+            </div>
+            <button class="button button-primary search-submit" type="submit">开始检索</button>
+          </div>
+        </form>
+        <p id="search-message" class="inline-message" role="status" aria-live="polite"></p>
+        <div id="search-results" class="results-list" aria-live="polite"></div>
+        <p id="results-empty" class="empty-state">输入检索词或选择词库后，结果会显示在这里。</p>
+      </section>
+
+      <section id="player-panel" class="panel player-panel" aria-labelledby="player-title" hidden>
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">PLAYER</p>
+            <h2 id="player-title">视频播放</h2>
+            <p id="player-note" class="section-description">使用浏览器控件播放本机视频。</p>
+          </div>
+        </div>
+        <video id="video-player" controls playsinline preload="metadata">
+          您的浏览器不支持 HTML 视频播放。
+        </video>
+      </section>
+
+      <section class="panel keywords-panel" aria-labelledby="keywords-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">05 · KEYWORDS</p>
+            <h2 id="keywords-title">词库管理</h2>
+            <p class="section-description">为词库命名，每行填写一个检索词。</p>
+          </div>
+        </div>
+        <form id="keyword-form" class="keyword-form">
+          <div class="field-stack">
+            <label for="keyword-name">词库名称</label>
+            <input id="keyword-name" name="name" type="text" maxlength="100" required />
+          </div>
+          <div class="field-stack">
+            <label for="keyword-terms">词条</label>
+            <textarea id="keyword-terms" name="terms" rows="4" required aria-describedby="keyword-terms-help"></textarea>
+            <p id="keyword-terms-help" class="field-help">每行一个词；空行会忽略。</p>
+          </div>
+          <button class="button button-primary" type="submit">创建词库</button>
+        </form>
+        <p id="keyword-message" class="inline-message" role="status" aria-live="polite"></p>
+        <div id="keyword-set-list" class="keyword-set-list"></div>
+        <p id="keywords-empty" class="empty-state" hidden>暂无词库。创建词库后可在检索表单中选择。</p>
+      </section>
+
+      <footer class="page-footer">
+        <p>本地视频与转写文本仅在本机工作区内处理。Whisper 使用本机已有配置，不会自动下载模型。</p>
+      </footer>
+    </main>
+  </body>
+</html>
