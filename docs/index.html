@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>语音内容智能检索系统</title>
+  <style>
+    :root { color-scheme: light; font-family: system-ui, sans-serif; }
+    body { margin: 0; background: #f4f7fb; color: #142033; }
+    header { padding: 28px 8vw 8px; }
+    h1 { margin: 0 0 8px; font-size: 1.8rem; }
+    p { line-height: 1.6; }
+    main { padding: 8px 8vw 48px; }
+    .note { background: #e8f1ff; border-radius: 12px; padding: 12px 16px; }
+    form { display: flex; gap: 8px; margin: 18px 0; }
+    input { flex: 1; padding: 12px 14px; border: 1px solid #c9d4e3; border-radius: 10px; font-size: 1rem; }
+    button { padding: 12px 18px; border: 0; border-radius: 10px; background: #1d4ed8; color: white; font-weight: 650; }
+    article { background: white; border-radius: 14px; padding: 16px 18px; margin: 10px 0; box-shadow: 0 8px 24px rgba(20,32,51,.06); }
+    .time { color: #1d4ed8; font-variant-numeric: tabular-nums; }
+    mark { background: #fde68a; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>语音内容智能检索系统</h1>
+    <p class="note">浏览器演示。示例转写已经放在页面里，不读取你的本机视频。正式程序仍用本地 FastAPI。</p>
+  </header>
+  <main>
+    <form id="search-form">
+      <input id="q" name="q" placeholder="搜索转写，例如：成语、训练、比赛" />
+      <button type="submit">检索</button>
+    </form>
+    <p id="count"></p>
+    <div id="results"></div>
+  </main>
+  <script>
+    const clips = [
+      { file: "操作演示.mp4", at: "00:12", text: "今天我们练习成语，先看不费吹灰之力。" },
+      { file: "操作演示.mp4", at: "00:40", text: "体育生占尽优势，迅速闯关，率先到达终点。" },
+      { file: "课堂录音.m4a", at: "03:05", text: "隔离的十四天里进行室内训练，然后回到球场。" },
+      { file: "课堂录音.m4a", at: "06:18", text: "英超联赛如果跟随防疫安排，本赛季的比赛都会受影响。" },
+      { file: "采访.wav", at: "01:02", text: "引进外籍球员的事还在报价阶段，加盟八字没一撇。" }
+    ];
+    const results = document.querySelector("#results");
+    const count = document.querySelector("#count");
+    function render(query) {
+      const q = query.trim();
+      const found = clips.filter(item => !q || item.text.includes(q) || item.file.includes(q));
+      count.textContent = q ? `找到 ${found.length} 条` : `示例库共 ${clips.length} 条，输入关键词开始检索`;
+      results.innerHTML = found.map(item => {
+        const text = q ? item.text.replaceAll(q, `<mark>${q}</mark>`) : item.text;
+        return `<article><div class="time">${item.file} · ${item.at}</div><p>${text}</p></article>`;
+      }).join("") || "<p>没有匹配的转写。</p>";
+    }
+    document.querySelector("#search-form").addEventListener("submit", (event) => {
+      event.preventDefault();
+      render(document.querySelector("#q").value);
+    });
+    render("");
+  </script>
+</body>
+</html>
